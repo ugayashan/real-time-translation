@@ -138,6 +138,7 @@
         };
     </script>
     <script type="module">
+        //importing ESCMA modules
         import { insertLineBreaks, capitalizeText } from './helpers/helpers.js';
         import { langs } from './helpers/languages.js';
         let isSentenceEnd = false;
@@ -196,8 +197,9 @@
                 i++;
             }
 
-            select_language.selectedIndex = 16;
+            select_language.selectedIndex = 16; //defaulted language to the en-US
 
+            //translation with AWS 
             async function translateTextWithAws(transcribed_text) {
                 const url = 'https://ju78x2owmh.execute-api.us-east-1.amazonaws.com/v1/translate';
                 const data = {
@@ -224,6 +226,7 @@
                 }
             }
 
+            //translation with IBM model 
             async function translateTextWithIbm(transcribed_text) {
                 var sourceLanguage = selectLanguage.options[selectLanguage.selectedIndex].text;
                 var targetLanguage = target_language_select.value;
@@ -270,6 +273,7 @@
                 });
             }
 
+            //invoking the speech recogniztion 
             function startSpeechRecognition() {
                 var recognition = new webkitSpeechRecognition();
                 let isSpeaking = false;
