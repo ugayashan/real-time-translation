@@ -1,0 +1,33 @@
+.bd-placeholder-img {
+    font-size: 1.125rem;
+    text-anchor: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+}
+
+.my-custom-box {
+    background-color: black;
+    color: white;
+    padding: 2rem;
+    border-radius: 30px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    height: 600px;
+}
+
+@media (min-width: 768px) {
+    .my-custom-box {
+        min-height: 150px;
+        /* Adjust minimum height for larger screens */
+    }
+}
+
+@media (min-width: 768px) {
+    .bd-placeholder-img-lg {
+        font-size: 3.5rem;
+    }
+
+    .my-custom-box {
+        height: 450px;
+    }
+}

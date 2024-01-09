@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.84.0">
+    <title>SPEECH TRANSLATION</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/offcanvas-navbar/">
+    <!-- Bootstrap core CSS -->
+    <link href="https://getbootstrap.com/docs/5.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://getbootstrap.com/docs/5.0/examples/offcanvas-navbar/offcanvas.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+</head>
+
+<body class="bg-light">
+
+    <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark" aria-label="Main navigation">
+        <div class="container-fluid">
+            <a class="navbar-brand">PHYSICIAN AI</a>
+            <button class="navbar-toggler p-0 border-0" type="button" id="navbarSideCollapse"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div>
+                <select class="form-select form-select-sm" aria-label=".form-select-sm example" id="translateSelect">
+                    <option value="nothing" selected>Translate Engine</option>
+                    <option value="aws">AWS</option>
+                    <option value="ibm">IBM</option>
+                    <option value="google" disabled>Google</option>
+                </select>
+            </div>
+        </div>
+    </nav>
+
+    <div class="nav-scroller bg-body shadow-sm">
+        <nav class="nav nav-underline" aria-label="Secondary navigation">
+            <p class="nav-link active" aria-current="page">Real Time Translation</p>
+        </nav>
+    </div>
+
+    <main class="container">
+        <div class="my-3 p-3 rounded shadow-sm my-custom-box d-flex flex-column align-items-center">
+            <p id="subtitleText" class="text-center"></p>
+            <!-- <p id="interim_span" class="interim"></p> -->
+
+            <div class="mt-auto text-white text-center">
+                <p id="translated_text"></p>
+            </div>
+        </div>
+    </main>
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="alert alert-warning" role="alert" id="infoCard" style="display: none;">
+                    <div class="card-body">
+                        <p class="card-title">Please select a translation engine</p>
+                    </div>
+                </div>
+                <select id="select_language" class="form-select mb-2" aria-label="Default select example"></select>
+                <!-- <select id="select_dialect" class="form-select" aria-label="Default select example"></select> -->
+            </div>
+            <div class="col d-flex align-items-center justify-content-center text-white bg-gray rounded">
+                <div id="loadingSpinner" style="cursor:pointer;display:none;" class="spinner-grow text-danger"
+                    role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
+                    class="bi bi-mic-fill" style="color: black;cursor: pointer;" viewBox="0 0 16 16">
+                    <path d="M5 3a3 3 0 0 1 6 0v5a3 3 0 0 1-6 0z" />
+                    <path
+                        d="M3.5 6.5A.5.5 0 0 1 4 7v1a4 4 0 0 0 8 0V7a.5.5 0 0 1 1 0v1a5 5 0 0 1-4.5 4.975V15h3a.5.5 0 0 1 0 1h-7a.5.5 0 0 1 0-1h3v-2.025A5 5 0 0 1 3 8V7a.5.5 0 0 1 .5-.5" />
+                </svg>
+            </div>
+            <div class="col">
+                <select id="target_language_select" class="form-select" aria-label="Default select example">
+                    <option value="en-US">Target Language</option>
+                    <option value="en">English</option>
+                    <option value="af-ZA">Afrikaans</option>
+                    <option value="ar">Arabic</option>
+                    <option value="id-ID">Bahasa Indonesia</option>
+                    <option value="ms-MY">Bahasa Melayu</option>
+                    <option value="ca-ES">Català</option>
+                    <option value="cs-CZ">Čeština</option>
+                    <option value="de-DE">Deutsch</option>
+                    <option value="es-ES">Español</option>
+                    <option value="eu-ES">Euskara</option>
+                    <option value="fr-FR">Français</option>
+                    <option value="gl-ES">Galego</option>
+                    <option value="hr-HR">Hrvatski</option>
+                    <option value="zu-ZA">IsiZulu</option>
+                    <option value="is-IS">Íslenska</option>
+                    <option value="it-IT">Italiano</option>
+                    <option value="hu-HU">Magyar</option>
+                    <option value="nl-NL">Nederlands</option>
+                    <option value="nb-NO">Norsk bokmål</option>
+                    <option value="pl-PL">Polski</option>
+                    <option value="pt-PT">Português</option>
+                    <option value="ro-RO">Română</option>
+                    <option value="sk-SK">Slovenčina</option>
+                    <option value="si-LK">Sinhala</option>
+                    <option value="fi-FI">Suomi</option>
+                    <option value="sv-SE">Svenska</option>
+                    <option value="tr-TR">Türkçe</option>
+                    <option value="bg-BG">български</option>
+                    <option value="ru-RU">Pусский</option>
+                    <option value="sr-RS">Српски</option>
+                    <option value="ko-KR">한국어</option>
+                    <option value="cmn-Hans-CN">中文 (中国大陆)</option>
+                    <option value="cmn-Hans-HK">中文 (香港)</option>
+                    <option value="cmn-Hant-TW">中文 (台灣)</option>
+                    <option value="yue-Hant-HK">粵語 (香港)</option>
+                    <option value="ja-JP">日本語</option>
+                    <option value="la">Lingua latīna</option>
+                </select>
+            </div>
+        </div>
+        <div class="col d-flex p-4 align-items-center justify-content-center text-white bg-gray rounded">
+
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://getbootstrap.com/docs/5.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://getbootstrap.com/docs/5.0/examples/offcanvas-navbar/offcanvas.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script>
+        toastr.options = {
+            closeButton: true,
+            progressBar: true,
+            preventDuplicates: true,
+            positionClass: 'toast-top-right',
+        };
+    </script>
+    <script type="module">
+        import { insertLineBreaks, capitalizeText } from './helpers/helpers.js';
+        import { langs } from './helpers/languages.js';
+        let isSentenceEnd = false;
+
+        $(document).ready(function () {
+            var selectLanguage, selectDialect, target_language_select;
+
+            selectLanguage = document.getElementById('select_language');
+            selectDialect = document.getElementById('select_dialect');
+            target_language_select = document.getElementById('target_language_select');
+
+            var translationEngine;
+
+            var recognitionTimer;
+            var final_transcript = '';
+            var recognizing = false;
+            var ignore_onend;
+            var start_timestamp;
+
+
+            //select events
+            $("#translateSelect").change(function () {
+                translationEngine = $(this).val();
+                if (translationEngine === "nothing") {
+                    $("#infoCard").show();
+                    $(".row .form-select, .row .bi-mic-fill, .row #select_language, .row #select_dialect, .row #target_language_select").hide();
+                } else {
+                    $("#infoCard").hide();
+                    $(".row .form-select, .row .bi-mic-fill, .row #select_language, .row #select_dialect, .row #target_language_select").show();
+                    if (translationEngine === "aws") {
+                        toastr.success('AWS selected');
+                    }
+                    if (translationEngine === "ibm") {
+                        toastr.success('IBM selected');
+                    }
+                }
+            });
+            //end select events
+            $("#translateSelect").change();
+            //click events - - -- - - -- - - - - - - - - - -- -  -- - 
+            $(".bi-mic-fill").on('click', function () {
+                $("#loadingSpinner").toggle();
+                $(".bi-mic-fill").hide();
+                clearTimeout(recognitionTimer);
+                startSpeechRecognition();
+            });
+
+            $("#loadingSpinner").on('click', function () {
+                $("#loadingSpinner").hide();
+                $(".bi-mic-fill").toggle();
+            });
+            //click events - - -- - - -- - - - - - - - - - -- -  -- - 
+            let i = 0;
+            for (const lang of langs) {
+                select_language.options[i] = new Option(lang.name, lang.code);
+                i++;
+            }
+
+            select_language.selectedIndex = 16;
+
+            async function translateTextWithAws(transcribed_text) {
+                const url = 'https://ju78x2owmh.execute-api.us-east-1.amazonaws.com/v1/translate';
+                const data = {
+                    text: transcribed_text,
+                    target_language: target_language_select.value,
+                };
+
+                try {
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(data),
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`Error: ${response.status} - ${response.statusText}`);
+                    }
+                    const result = await response.json();
+                    return result;
+                } catch (error) {
+                    console.error('Error:', error.message);
+                }
+            }
+
+            async function translateTextWithIbm(transcribed_text) {
+                var sourceLanguage = selectLanguage.options[selectLanguage.selectedIndex].text;
+                var targetLanguage = target_language_select.value;
+
+                return new Promise(function (resolve, reject) {
+                    var settings = {
+                        "url": "https://api.au-syd.language-translator.watson.cloud.ibm.com/instances/bc4612a2-26fe-4823-8727-3a553bda0579/v3/translate?version=2018-05-01",
+                        "method": "POST",
+                        "timeout": 0,
+                        "headers": {
+                            "Content-Type": "application/json",
+                            "Authorization": "Basic YXBpa2V5OjVWU2c1Q1pQckNPODI3R1pCVUc5U2VmRWlRY29UR00xZHltYW8zTTdyX3NP"
+                        },
+                        "data": JSON.stringify({
+                            "text": [transcribed_text],
+                            "source": sourceLanguage,
+                            "target": targetLanguage
+                        }),
+                    };
+
+                    $.ajax(settings)
+                        .done(function (response) {
+                            // Resolve the promise with the translation result
+                            if (typeof onSuccess === 'function') {
+                                onSuccess(response);
+                            } else {
+                                var result = response['translations'][0]['translation'];
+                                resolve(result);
+                            }
+                        })
+                        .fail(function (jqXHR, textStatus, errorThrown) {
+                            // Reject the promise with the error details
+                            if (typeof onError === 'function') {
+                                onError({
+                                    jqXHR: jqXHR,
+                                    textStatus: textStatus,
+                                    errorThrown: errorThrown
+                                });
+                            } else {
+                                console.error('Error:', errorThrown);
+                                reject(errorThrown);
+                            }
+                        });
+                });
+            }
+
+            function startSpeechRecognition() {
+                var recognition = new webkitSpeechRecognition();
+                let isSpeaking = false;
+                recognition.continuous = true;
+                recognition.lang = select_language.value;
+                recognition.interimResults = true;
+                recognition.onstart = function () {
+                    recognizing = true;
+                    isSpeaking = true;
+                };
+                recognition.audioend = (event) => {
+                    console.log("Sound has stopped being received", event);
+                };
+                recognition.onerror = function (event) {
+                    if (event.error == 'no-speech') {
+                        ignore_onend = true;
+                    }
+                    if (event.error == 'audio-capture') {
+                        ignore_onend = true;
+                    }
+                    if (event.error == 'not-allowed') {
+                        if (event.timeStamp - start_timestamp < 100) {
+                            // showInfo('info_blocked');
+                        } else {
+                            // showInfo('info_denied');
+                        }
+                        ignore_onend = true;
+                    }
+                };
+                recognition.onend = function () {
+                    recognition.start();
+                    recognizing = false;
+
+                    isSpeaking = false;
+                    final_transcript = '';
+                    if (ignore_onend) {
+                        return;
+                    }
+
+                    if (!final_transcript) {
+                        return;
+                    }
+                    if (window.getSelection) {
+                        var range = document.createRange();
+                        range.selectNode(document.getElementById('subtitleText'));
+                        var selection = window.getSelection();
+                        selection.removeAllRanges();
+                        selection.addRange(range);
+                    }
+
+                    final_transcript = '';
+                };
+                recognition.onresult = async function (event) {
+                    var interim_transcript = '';
+                    for (var i = event.resultIndex; i < event.results.length; ++i) {
+                        if (event.results[i].isFinal) {
+                            let finalSentence = event.results[i][0].transcript;
+                            // Clear the final transcript before adding new sentence
+                            final_transcript = '';
+                            final_transcript += capitalizeText(finalSentence);
+                            subtitleText.innerHTML = insertLineBreaks(final_transcript);
+
+                            // Additional processing for punctuation and next sentence
+                            if (finalSentence.endsWith('.') || finalSentence.endsWith('?') || finalSentence.endsWith('!')) {
+                                isSentenceEnd = true;
+                            } else {
+                                isSentenceEnd = false;
+                            }
+                        } else {
+                            interim_transcript += event.results[i][0].transcript;
+                            if (translationEngine == "aws") {
+                                const translatedText = await translateTextWithAws(interim_transcript);
+                                document.getElementById('translated_text').innerHTML = translatedText || '';
+                            }
+                            if (translationEngine == "ibm") {
+                                translateTextWithIbm(interim_transcript)
+                                    .then(function (result) {
+                                        console.log(result);
+                                        document.getElementById('translated_text').innerHTML = result || '';
+                                    })
+                                    .catch(function (error) {
+                                        console.error('Translation Error:', error);
+                                        toastr.error(error);
+                                    });
+                            }
+                        }
+                    }
+                };
+                recognition.start();
+            }
+        });
+    </script>
+</body>
+
+</html>
